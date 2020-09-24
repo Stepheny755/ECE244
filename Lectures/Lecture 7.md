@@ -1,50 +1,5 @@
 # Lecture 7 - Classes and Objects
 
-### From last Lecture
-
-Code:
-
-#### DayOfYear.h
-```c++
-class DayOfYear{
-  private:
-    int day;
-    int month;
-  public:
-    void setDay(int d);
-    void setMonth(int m);
-    void print();
-};
-```
-
-#### main.cpp
-```c++
-int main(){
-  DayOfYear FirstOfJuly;
-  DayOfYear Christmas;
-
-  FirstOfJuly.day = 1;
-  FirstOfJuly.month = 7;
-}
-```
-
-#### DayOfYear.cpp
-```c++
-#include <iostream>
-
-void DayOfYear::setDay(int d){
-  day = d;
-}
-
-void DayOfYear::setMonth(int m){
-  month = m;
-}
-
-void DayOfYear::print(){
-  cout << day << "/" << month << endl;
-}
-```
-
 ## Access Control
 
 **Access Control** works by class, not by object.
