@@ -1,7 +1,5 @@
 # Lecture 7 - Classes and Objects
 
-## Notes
-
 ### From last Lecture
 
 Code:
@@ -47,7 +45,7 @@ void DayOfYear::print(){
 }
 ```
 
-### Access Control
+## Access Control
 
 **Access Control** works by class, not by object.
 If we define another **member function** called AddOne:
@@ -76,7 +74,7 @@ birthday.AddOne();
 ```
 The day and month fields noted above are related to the object birthday.
 
-### Code Organization (Header Files)
+## Code Organization (Header Files)
 
 Good practice and convention is to place class definitions in **header files** and to place member function implementations in **.cpp files**.
 
@@ -134,7 +132,7 @@ Notes:
   * The **member function** declarations are located inside `DayOfYear.h`
   * Will throw a **compile time error** if the header is not included
 
-### Compiling
+## Compiling
 
 Compiling code with class definitions in .cc files is the same as normal cpp compiling:
 
@@ -147,7 +145,7 @@ compiling DayOfYear.o
 linking all (main.o and DayOfYear.o)
 > g++ main.o DayOfYear.o -o myprog.exe
 
-### Need for Initialization - Constructors
+## Need for Initialization - Constructors
 
 Sometimes we would like to create variables and assign them initial values. For example, `int x = 0;`
 * But how do we do that for objects?
