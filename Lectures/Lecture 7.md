@@ -2,6 +2,51 @@
 
 ## Notes
 
+### From last Lecture
+
+Code:
+
+#### DayOfYear.h
+```c++
+class DayOfYear{
+  private:
+    int day;
+    int month;
+  public:
+    void setDay(int d);
+    void setMonth(int m);
+    void print();
+};
+```
+
+#### main.cpp
+```c++
+int main(){
+  DayOfYear FirstOfJuly;
+  DayOfYear Christmas;
+
+  FirstOfJuly.day = 1;
+  FirstOfJuly.month = 7;
+}
+```
+
+#### DayOfYear.cpp
+```c++
+#include <iostream>
+
+void DayOfYear::setDay(int d){
+  day = d;
+}
+
+void DayOfYear::setMonth(int m){
+  month = m;
+}
+
+void DayOfYear::print(){
+  cout << day << "/" << month << endl;
+}
+```
+
 ### Access Control
 
 **Access Control** works by class, not by object.
@@ -39,18 +84,18 @@ Organizing our `DayOfYear` class into separate `.h` and `.cpp` files:
 
 #### DayOfYear.h
 ```c++
-#ifndef _dayofyear_h //1
-#define _dayofyear_h //2
+#ifndef _dayofyear_h
+#define _dayofyear_h
 
 class DayOfYear{
   private:
     int day;
     int month;
   public:
-    int getDay(); //3
-    int getMonth(); //3
-    void setDay(int d); //4
-    void setMonth(int m); //4
+    int getDay();
+    int getMonth();
+    void setDay(int d);
+    void setMonth(int m);
     void print();
 };
 #endif
@@ -65,7 +110,7 @@ Notes:
 
 #### DayOfYear.cpp
 ```c++
-#include "DayOfYear.h" //1
+#include "DayOfYear.h"
 #include <iostream>
 
 int DayOfYear::getDay(){
@@ -110,51 +155,87 @@ Sometimes we would like to create variables and assign them initial values. For 
 **Constructors** are functions that you write and are automatically called upon creation of an object
 * The **constructor** is used to initialize objects easily
   * You can pass in initial parameters to the argument with the **constructor**
-* Constructors ***must*** have the same name as the class
+* **Constructors** ***must*** have the same name as the class
+  * Constructors are members of the class
+  * Constructors have no return type *and* no defined type
+  * Constructors are usually public (although they can be private)
+* Constructor selection (which constructor the compile chooses) happens **at runtime**
 * C++ 2011 standard has a natural mechanism that allows for **default member initializers**
   * This simplifies initialization
 
-
-
-## Code
+One special case: The **default constructor**
+* It has all the same properties as the constructor listed above
+  * The default constructor *takes no argument*
 
 #### DayOfYear.h
 ```c++
+#ifndef _dayofyear_h
+#define _dayofyear_h
+
 class DayOfYear{
   private:
     int day;
     int month;
   public:
+    DayOfYear();
+    DayOfYear(int d,int m);
+    DayOfYear(string s);
+    int getDay();
+    int getMonth();
     void setDay(int d);
     void setMonth(int m);
     void print();
 };
+#endif
 ```
-
 #### main.cpp
 ```c++
 int main(){
-  DayOfYear FirstOfJuly;
-  DayOfYear Christmas;
-
-  FirstOfJuly.day = 1;
-  FirstOfJuly.month = 7;
+  DayOfYear birthday;
+  DayOfYear christmas(25,12);
+  DayOfYear mybirthday("12 16");
 }
 ```
+Notes:
+1. `DayOfYear()` is the default constructor
+2. `DayOfYear(int d,int m)` and `DayOfYear(string s)` are additional constructors
+  * You can define as many constructors as you would like
+    * However, every constructor ***must have different types or amounts of arguments***
+3. `christmas(25,12)` is both object creation and initialization (via a constructor)
 
-#### DayOfYear.cpp
+### Properties of Default Constructor
+
+Every class must contain at least one constructor
+  * If you *define no constructor*, the compiler will define the **default constructor** for you
+  * If you *do define a constructor*, the compiler will ***not*** define a **default constructor** for you
+
+For example:
+
+#### DayOfYear.h
 ```c++
-#include <iostream>
+#ifndef _dayofyear_h
+#define _dayofyear_h
 
-void DayOfYear::setDay(int d){
-  day = d;
-}
-
-void DayOfYear::setMonth(int m){
-  month = m;
-}
-
-void DayOfYear::print(){
-  cout << day << "/" << month << endl;
+class DayOfYear{
+  private:
+    int day;
+    int month;
+  public:
+    DayOfYear(int d,int m);
+    ...
+    void print();
+};
+#endif
+```
+#### main.cpp
+```c++
+int main(){
+  DayOfYear birthday;
 }
 ```
+The above code will return a **compile time error**
+* **default constructor** is no longer being generated for you
+
+Options to fix this **compile time error**
+  * You must either define the default constructor
+  * You can change the object initialization to `DayOfYear birthday(16,12);`
