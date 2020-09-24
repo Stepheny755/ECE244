@@ -2,12 +2,12 @@
 
 ## Notes
 
-#### Access Control
+### Access Control
 
 **Access Control** works by class, not by object.
 If we define another **member function** called AddOne:
 
-```
+```c++
 void DayOfYear::AddOne(){
   DayOfYear temp;
   temp.day = 1;
@@ -23,19 +23,23 @@ This member function can access any private member of any object of the same typ
 * day and month are related to the object that AddOne is called on
 
 For example, in main:
-```
+```c++
 DayOfYear birthday;
 birthday.setDay(18);
 birthday.setMonth(6);
 birthday.AddOne();
 ```
-The day and month fields noted above are related to the object birthday
+The day and month fields noted above are related to the object birthday.
+
+### Code Organization (Header Files)
+
+**Header files** must be included in
 
 
 ## Code
 
 ### DayOfYear.h
-```
+```c++
 class DayOfYear{
   private:
     int day;
@@ -48,7 +52,7 @@ class DayOfYear{
 ```
 
 ### main.cpp
-```
+```c++
 int main(){
   DayOfYear FirstOfJuly;
   DayOfYear Christmas;
@@ -59,7 +63,7 @@ int main(){
 ```
 
 ### DayOfYear.cpp
-```
+```c++
 #include <iostream>
 
 void DayOfYear::setDay(int d){
