@@ -102,9 +102,9 @@ Notes:
 1. #ifndef checks if the given **preprocessor directive** is not defined
 2. #define defines the given **preprocessor directive**
 3. `getDay()` and `getMonth()` functions are considered **accessor**, or **getter** methods
-  * they return/output some data (usually private) from the object
+  - they return/output some data (usually private) from the object
 4. `setDay()` and `setMonth()` functions are considered **mutator**, or **setter** methods
-  * they change some data (usually private) inside the object
+  - they change some data (usually private) inside the object
 
 #### DayOfYear.cpp
 ```c++
