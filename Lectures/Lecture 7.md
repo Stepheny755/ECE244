@@ -102,9 +102,9 @@ Notes:
 1. #ifndef checks if the given **preprocessor directive** is not defined
 2. #define defines the given **preprocessor directive**
 3. `getDay()` and `getMonth()` functions are considered **accessor**, or **getter** methods
-    - they return/output some data (usually private) from the object
+    * they return/output some data (usually private) from the object
 4. `setDay()` and `setMonth()` functions are considered **mutator**, or **setter** methods
-    - they change some data (usually private) inside the object
+    * they change some data (usually private) inside the object
 
 #### DayOfYear.cpp
 ```c++
@@ -197,8 +197,8 @@ int main(){
 Notes:
 1. `DayOfYear()` is the default constructor
 2. `DayOfYear(int d,int m)` and `DayOfYear(string s)` are additional constructors
-  * You can define as many constructors as you would like
-    * However, every constructor ***must have different types or amounts of arguments***
+    * You can define as many constructors as you would like
+      * However, every constructor ***must have different types or amounts of arguments***
 3. `christmas(25,12)` is both object creation and initialization (via a constructor)
 
 ### Properties of Default Constructor
