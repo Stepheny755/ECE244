@@ -155,13 +155,13 @@ Sometimes we would like to create variables and assign them initial values. For 
   * You can pass in initial parameters to the argument with the **constructor**
 * **Constructors** ***must*** have the same name as the class
   * Constructors are members of the class
-  * Constructors have no return type *and* no defined type
+  * Constructors have **no** return type
   * Constructors are usually public (although they can be private)
 * Constructor selection (which constructor the compile chooses) happens **at runtime**
 * C++ 2011 standard has a natural mechanism that allows for **default member initializers**
   * This simplifies initialization
 
-One special case: The **default constructor**
+### One special case: The **default constructor**
 * It has all the same properties as the constructor listed above
   * The default constructor *takes no argument*
 
@@ -237,3 +237,5 @@ The above code will return a **compile time error**
 Options to fix this **compile time error**
   * You must either define the default constructor
   * You can change the object initialization to `DayOfYear birthday(16,12);`
+
+*Beep Boop*
