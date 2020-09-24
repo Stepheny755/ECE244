@@ -2,10 +2,10 @@
 
 ## Access Control
 
-C++ classes can have **public** and **private** members. Using the `DayOfYear` example,
+C++ classes can have **public** and **private** members.
 
+#### DayOfYear.h
 ```c++
-DayOfYear.h
 class DayOfYear{
   private:
     int day;
@@ -34,7 +34,7 @@ int main(){
 Note:
 1. `FirstOfJuly.day = 1;` and `FirstOfJuly.month = 1;` are errors
     * **private members** cannot be accessed outside the FirstOfJuly object
-  
+
 **Access Control** works by class, not by object.
 If we define another **member function** called AddOne:
 
