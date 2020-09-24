@@ -2,6 +2,39 @@
 
 ## Access Control
 
+C++ classes can have **public** and **private** members. Using the `DayOfYear` example,
+
+```c++
+DayOfYear.h
+class DayOfYear{
+  private:
+    int day;
+    int month;
+  public:
+    void setDay(int d);
+    void setMonth(int m);
+    void print();
+};
+```
+Note:
+1. `int day` and `int month` are **private** members
+    * They can only be accessed by **function members** in the class
+2. `setDay(int d)`, `setMonth(int m)`, and `print()` are **public** members
+    * They can be accessed anywhere in the source code via an object
+
+#### main.cpp
+```c++
+int main(){
+  DayOfYear FirstOfJuly;
+  DayOfYear Christmas;
+  FirstOfJuly.day = 1;
+  FirstOfJuly.month = 7;
+}
+```
+Note:
+1. `FirstOfJuly.day = 1;` and `FirstOfJuly.month = 1;` are errors
+    * **private members** cannot be accessed outside the FirstOfJuly object
+  
 **Access Control** works by class, not by object.
 If we define another **member function** called AddOne:
 
@@ -84,8 +117,8 @@ void DayOfYear::print(){
 ```
 Notes:
 1. Need to include `DayOfYear.h` **header file**
-  * The **member function** declarations are located inside `DayOfYear.h`
-  * Will throw a **compile time error** if the header is not included
+    * The **member function** declarations are located inside `DayOfYear.h`
+    * Will throw a **compile time error** if the header is not included
 
 ## Compiling
 
