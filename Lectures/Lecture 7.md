@@ -1,5 +1,6 @@
 # Lecture 7 - Classes and Objects
 
+
 ## Access Control
 
 C++ classes can have **public** and **private** members.
@@ -34,6 +35,7 @@ int main(){
 Note:
 1. `FirstOfJuly.day = 1;` and `FirstOfJuly.month = 1;` are errors
     * **private members** cannot be accessed outside the FirstOfJuly object
+
 
 **Access Control** works by class, not by object.
 If we define another **member function** called AddOne:
@@ -120,6 +122,7 @@ Notes:
     * The **member function** declarations are located inside `DayOfYear.h`
     * Will throw a **compile time error** if the header is not included
 
+
 ## Compiling
 
 Compiling code with class definitions in .cc files is the same as normal cpp compiling:
@@ -132,6 +135,7 @@ compiling DayOfYear.o
 
 linking all (main.o and DayOfYear.o)
 > g++ main.o DayOfYear.o -o myprog.exe
+
 
 ## Need for Initialization - Constructors
 
