@@ -31,11 +31,19 @@ GameState::GameState(){
 }
 
 int GameState::get_selectedRow(){
-
+  return selectedRow;
 }
 
 int GameState::get_selectedColumn(){
-  
+  return selectedColumn;
+}
+
+void GameState::set_selectedRow(int value){
+
+}
+
+void GameState::set_selectedColumn(int value){
+
 }
 
 bool GameState::get_moveValid(){
