@@ -24,11 +24,14 @@ void playMove(GameState& game_state) {
     turn = game_state.get_turn();
     if(val!=Empty){
       game_state.set_moveValid(false);
-    }else{
-      game_state.set_moveValid(true);
-      game_state.set_gameBoard(row,col,(turn)?X:O);
-
-      game_state.set_turn(!turn);
+      return;
     }
+    game_state.set_moveValid(true);
+    game_state.set_gameBoard(row,col,(turn)?X:O);
+    game_state.set_turn(!turn);
+
+    
+
+
     return;
 }
