@@ -16,6 +16,10 @@
 
 // ECE244 Student: add you code below
 
+bool inBounds(int val){
+  return (val > 0)&&(val < boardSize);
+}
+
 GameState::GameState(){
   selectedRow = 0;
   selectedColumn = 0;
@@ -39,7 +43,7 @@ int GameState::get_selectedColumn(){
 }
 
 void GameState::set_selectedRow(int value){
-  if(value < boardSize || value > boardSize-1){
+  if(!inBounds(val)){
     return;
   }else{
     selectedRow = value;
@@ -47,7 +51,7 @@ void GameState::set_selectedRow(int value){
 }
 
 void GameState::set_selectedColumn(int value){
-  if(value < boardSize || value > boardSize-1){
+  if(!inBounds(value)){
     return;
   }else{
     selectedColumn = value;
@@ -87,9 +91,15 @@ void GameState::set_turn(bool val){
 }
 
 int GameState::get_gameBoard(int row,int col){
-  return 0;
+  if(inBounds(row)&&inBounds(col)){
+    return gameBoard[row][col];
+  }
+  return Empty;
 }
 
 void GameState::set_gameBoard(int row,int col,int value){
-
+  if(inBounds(row)&&inBounds(col)){
+    gameBoard[row][col]=value;
+  }
+  return;
 }
