@@ -53,14 +53,18 @@ int main() {
         // implemented before this works
 
         // ECE244 Student: add your code here
+        game_state.set_selectedRow(row);
+        game_state.set_selectedColumn(col);
 
         // Call playMove
 
         // ECE244 Student: add your code here
+        playMove(game_state);
 
         // Print the GameState object, as prescribed in the handout
 
         // ECE244 Student: add your code here
+        printGameBoard(game_state);
 
     }
     return 0;

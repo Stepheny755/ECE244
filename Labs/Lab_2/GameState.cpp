@@ -39,11 +39,19 @@ int GameState::get_selectedColumn(){
 }
 
 void GameState::set_selectedRow(int value){
-
+  if(value < boardSize || value > boardSize-1){
+    return;
+  }else{
+    selectedRow = value;
+  }
 }
 
 void GameState::set_selectedColumn(int value){
-
+  if(value < boardSize || value > boardSize-1){
+    return;
+  }else{
+    selectedColumn = value;
+  }
 }
 
 bool GameState::get_moveValid(){
