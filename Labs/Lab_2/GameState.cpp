@@ -17,7 +17,7 @@
 // ECE244 Student: add you code below
 
 bool inBounds(int val){
-  return (val > 0)&&(val < boardSize);
+  return (val >= 0)&&(val < boardSize);
 }
 
 GameState::GameState(){
@@ -43,7 +43,7 @@ int GameState::get_selectedColumn(){
 }
 
 void GameState::set_selectedRow(int value){
-  if(!inBounds(val)){
+  if(!inBounds(value)){
     return;
   }else{
     selectedRow = value;

@@ -23,6 +23,8 @@ using namespace std;
 // Function prototype for playMove
 void playMove(GameState&);
 void printGameBoard(GameState&);
+string boolToStr(bool);
+string gameBoardToStr(int);
 
 // The main function
 int main() {
@@ -77,12 +79,27 @@ void printGameBoard(GameState& game_state){
   for(int i = 0;i < boardSize;i++){
     cout << "   ";
     for(int j = 0;j < boardSize;j++){
-      cout << game_state.get_gameBoard(i,j) << " ";
+      cout << gameBoardToStr(game_state.get_gameBoard(i,j)) << " ";
     }
     cout << "\n";
   }
-  cout << "moveValid: " << game_state.get_moveValid() << endl;
-  cout << "gameOver: " << game_state.get_gameOver() << endl;
+  cout << "moveValid: " << boolToStr(game_state.get_moveValid()) << endl;
+  cout << "gameOver: " << boolToStr(game_state.get_gameOver()) << endl;
   cout << "winCode: " << game_state.get_winCode() << endl;
   cout << endl;
+}
+
+string boolToStr(bool val){
+  return (val?"true":"false");
+}
+
+string gameBoardToStr(int val){
+  switch(val){
+    case X:
+      return "X";
+    case O:
+      return "O";
+    default:
+      return "B";
+  }
 }
