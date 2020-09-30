@@ -19,7 +19,7 @@ However, there is disconnect between *input* and *output* streams
 * Input Stream: `cin`
 * Output Stream: `cout`
 * Another output stream: `cerr`
-  * Used for error codes
+  * Used for error messages
 
 ## Input Stream
 
