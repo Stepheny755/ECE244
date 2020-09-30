@@ -170,7 +170,6 @@ Notes:
 1. `cin` will read `x=123`
 2. `cin` will ***not*** read `y`
     * In this case, `cin` tries to read from the '.' character but **fails**
-      * Calls *
 
 ### Strings in Stream Extraction
 
