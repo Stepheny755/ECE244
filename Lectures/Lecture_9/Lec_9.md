@@ -190,7 +190,7 @@ Notes:
 1. `cin` will read `firstName="Tom"`
 2. `cin` will read `lastName="Li"`
 
-### What about errors in Input Stream?
+## What about errors in Input Stream?
 
 `cin` fails silently
 * Execution continues, leaving the variable and input stream unaffected;
@@ -229,7 +229,7 @@ If the input stream is:
 * Developer must check the flags
   * C++ `cin` fails silently (will *not* inform you)
 
-The **fail** flag
+### The fail flag
 
 #### main.cpp
 ```c++
