@@ -95,15 +95,33 @@ Notes:
   * This function ignores characters in the stream
     * `cin.ignore();` takes two parameters. Either:
       1. Will *ignore 1000 characters*
-        * 1000 is an arbitrary example, some systems have a limit of 256 characters per stream
+          * 1000 is an arbitrary example, some systems have a limit of 256 characters per stream
       2. Will *ignore until '\n' is found*
 * Handle errors in this order:
   * Clear flags with `cin.clear();`, ***and then*** ignore stream characters with `cin.ignore();`
     * The reverse order may not work, since `cin.ignore()` depends on flags
 
-## cin.ignore
+## The Ignore Function
 
-`cin.ignore` is used to discard part of the stream
-* Compare:
-  1. `cin.ignore(1000,'\n');`
-  2. `cin.ignore(1000,' ');`
+`cin.ignore()` is used to discard part of the stream. For the below example:
+
+#### main.cpp
+```c++
+int main(){
+  int x = 9;
+  cin >> x;
+}
+```
+If the input stream is:
+
+> 'T' 'e' 'n' ' ' '2'
+
+Different ways to implement `cin.ignore();`
+1. `cin.ignore(1000,'\n');`
+    * Clears the first 1000 character of the stream, or until '\n'
+2. `cin.ignore(1000,' ');`
+    * Ignores spaces
+    * More elegant way to clear problematic parts of the stream
+3. `cin.ignore(4,'\n')`
+    * Ignores 4 characters or until '\n' is reached
+      * Can be used to ignore first part of a word/name
