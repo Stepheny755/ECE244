@@ -168,7 +168,7 @@ This works for input:
 > '2' '0' '4' ' ' '1' '1' '3'
 > eof
 
-For this input, `sum=317`
+`sum=317`
 * `317=204+113`
 
 However for this input:
