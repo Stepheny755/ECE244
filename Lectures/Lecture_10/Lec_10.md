@@ -122,6 +122,8 @@ Different ways to implement `cin.ignore();`
 2. `cin.ignore(1000,' ');`
     * Ignores spaces
     * More elegant way to clear problematic parts of the stream
-3. `cin.ignore(4,'\n')`
-    * Ignores 4 characters or until '\n' is reached
+    * Will read the '2' into x
+3. `cin.ignore(3,'\n')`
+    * Ignores 3 characters or until '\n' is reached
       * Can be used to ignore first part of a word/name
+    * Will read the '2' into x
