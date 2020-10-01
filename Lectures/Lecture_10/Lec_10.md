@@ -94,9 +94,9 @@ Notes:
 * `cin.ignore(1000,'\n');`
   * This function ignores characters in the stream
     * `cin.ignore();` takes two parameters. Either:
-    1. Will *ignore 1000 characters*
-      * 1000 is an arbitrary example, some systems have a limit of 256 characters per stream
-    2. Will *ignore until '\n' is found*
+      1. Will *ignore 1000 characters*
+        * 1000 is an arbitrary example, some systems have a limit of 256 characters per stream
+      2. Will *ignore until '\n' is found*
 * Handle errors in this order:
   * Clear flags with `cin.clear();`, ***and then*** ignore stream characters with `cin.ignore();`
     * The reverse order may not work, since `cin.ignore()` depends on flags
