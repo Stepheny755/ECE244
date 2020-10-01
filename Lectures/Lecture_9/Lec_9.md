@@ -231,6 +231,8 @@ If the input stream is:
 
 ### The Fail flag
 
+For the below code:
+
 #### main.cpp
 ```c++
 #include <iostream>
