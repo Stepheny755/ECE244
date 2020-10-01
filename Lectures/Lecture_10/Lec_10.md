@@ -116,7 +116,7 @@ If the input stream is:
 
 > 'T' 'e' 'n' ' ' '2'
 
-Different ways to implement `cin.ignore();`
+There are different ways to implement `cin.ignore();`
 1. `cin.ignore(1000,'\n');`
     * Clears the first 1000 character of the stream, or until '\n'
 2. `cin.ignore(1000,' ');`
@@ -127,3 +127,55 @@ Different ways to implement `cin.ignore();`
     * Ignores 3 characters or until '\n' is reached
       * Can be used to ignore first part of a word/name
     * Will read the '2' into x
+
+## End of File
+
+We would like to read inputs until the user has no more inputs to enter
+* In APS105, we sometimes used '-1' to indicate the *last element* of sequence of integer inputs
+  * Limits us to only *positive* integers
+
+Enter the **End of File** (eof) error
+* Indicates that there is no more input to be expected
+* Encountering the **eof** when more input is expected raises **two** flags in `cin`:
+  * **fail** flag is raised
+  * **eof** flag is raised
+
+On the terminal (when running executables), **eof** can be induced by using **ctrl+d**
+* Special character, like '\0' or '\n'
+* Is not included after '\n'
+  * User must *specifically* enter **eof** using ctrl+d
+
+#### main.cpp
+```c++
+#include <iostream>
+using namespace std;
+int main(){
+  int x,sum=0;
+  bool more = true;
+  while(more){
+    cin >> x;
+    if(x.eof()) more = false;
+    else sum=sum+x;
+  }
+}
+```
+Notes:
+* Read characters through `cin` when `more==true`
+* As soon as **eof** is provided, stop
+
+This works for input:
+
+> '2' '0' '4' ' ' '1' '1' '3'
+> eof
+
+For this input, `sum=317`
+* `317=204+113`
+
+However for this input:
+
+> '2' '0' '4' ' ' ' ' 't' 'e' 'n'
+
+`sum=408`. Why?
+* Notice the two spaces
+  * Upon reaching the second space character (second **delimiter**), `cin` will read from stream again
+    * The issue is the **eof** flag is still `false`, so the `if` statement goes to `else` again, so `sum=sum+x;` runs again.
