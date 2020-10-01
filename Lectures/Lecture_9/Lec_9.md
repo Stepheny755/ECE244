@@ -206,9 +206,9 @@ If the input stream is:
 
 > 'T' 'e' 'n' ' ' '2'
 
-`cin` will not affect the value of x, and fails silently without any indication
+`cin` will ***not*** affect the value of x, and fails silently without any indication
 * On ECF computers, this is the behaviour of cin
-* On certain compilers, `cin` will set the value of x to null
+* On *certain* compilers, `cin` will set the value of x to null
 
 `cin` will not read space characters
 * Since space characters (' ') are **delimiters**
@@ -229,7 +229,7 @@ If the input stream is:
 * Developer must check the flags
   * C++ `cin` fails silently (will *not* inform you)
 
-### The fail flag
+### The Fail flag
 
 #### main.cpp
 ```c++
