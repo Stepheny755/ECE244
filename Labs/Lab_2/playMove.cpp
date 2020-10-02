@@ -30,8 +30,62 @@ void playMove(GameState& game_state) {
     game_state.set_gameBoard(row,col,(turn)?X:O);
     game_state.set_turn(!turn);
 
-    
+    for(int i = 0;i < boardSize;i++){
+      int countRow = 0;
+      for(int j = 0;j < boardSize;j++){
+        int val = game_state.get_gameBoard(i,j);
+        countRow+=val;
+        if(countRow==3||countRow==-3){
+          game_state.set_winCode(i+1);
+          game_state.set_gameOver(true);
+          return;
+        }
+      }
+    }
 
+    for(int i = 0;i < boardSize;i++){
+      int countCol = 0;
+      for(int j = 0;j < boardSize;j++){
+        int val = game_state.get_gameBoard(j,i);
+        countCol+=val;
+        if(countCol==3||countCol==-3){
+          game_state.set_winCode(i+4);
+          game_state.set_gameOver(true);
+          return;
+        }
+      }
+    }
+
+    int count1=0,count2=0;
+    for(int i = 0;i < boardSize;i++){
+      int val1 = game_state.get_gameBoard(i,i);
+      int val2 = game_state.get_gameBoard(i,boardSize-1-i);
+      count1 += val1;
+      count2 += val2;
+      if(count1==3||count1==-3){
+        game_state.set_winCode(7);
+        game_state.set_gameOver(true);
+        return;
+      }
+      if(count2==3||count2==-3){
+        game_state.set_winCode(8);
+        game_state.set_gameOver(true);
+        return;
+      }
+    }
+
+    int countNonEmpty = 0;
+    for(int i = 0;i < boardSize;i++){
+      for(int j = 0;j < boardSize;j++){
+        int val = game_state.get_gameBoard(i,j);
+        if(val!=Empty){
+          countNonEmpty++;
+        }
+      }
+    }
+    if(countNonEmpty==9){
+      game_state.set_gameOver(true);
+    }
 
     return;
 }

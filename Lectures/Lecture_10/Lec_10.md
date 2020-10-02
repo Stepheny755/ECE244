@@ -154,7 +154,7 @@ int main(){
   bool more = true;
   while(more){
     cin >> x;
-    if(x.eof()) more = false;
+    if(cin.eof()) more = false;
     else sum=sum+x;
   }
 }
@@ -162,6 +162,7 @@ int main(){
 Notes:
 * Read characters through `cin` when `more==true`
 * As soon as **eof** is provided, stop
+* `cin.eof()` is an **accessor** method that returns the **eof** flag
 
 This works for input:
 
@@ -179,3 +180,27 @@ However for this input:
 * Notice the two spaces
   * Upon reaching the second space character (second **delimiter**), `cin` will read from stream again
     * The issue is the **eof** flag is still `false`, so the `if` statement goes to `else` again, so `sum=sum+x;` runs again.
+
+
+How do we fix this?
+
+#### main.cpp
+```c++
+#include <iostream>
+using namespace std;
+int main(){
+  int x,sum=0;
+  bool more = true;
+  while(more){
+    cin >> x;
+    if(cin.fail()){
+      if(cin.eof()){
+        more = false;
+      }else{
+        sum=sum+x;
+      }
+
+    }
+  }
+}
+```
