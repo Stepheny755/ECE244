@@ -117,7 +117,7 @@ What about if we wanted to read from a file on a hard drive?
 * Different from `cin` or `sstream`, as reading from a file has no directly observable UI elements
 * Use `ifstream` and `ofstream`
 
-### Input Streams
+### Input File Streams
 
 Reading from file
 
@@ -157,7 +157,7 @@ Second `cout` will print "233"
 Notes:
 1. `#include <fstream>`
     * `<fstream>` includes methods for **file stream** input and output
-      * Contains `istream` (**input stream**) and `ostream` (**output stream**)
+      * Contains `ifstream` (**input file stream**) and `ofstream` (**output file stream**)
 2. `ifstream inFile;`
     * Defines an object of **input file stream** type with name "inFile"
 3. `inFile.open("inputfile");`
@@ -201,7 +201,7 @@ Properties of `ifstream`
   * Unattaches the stream from the file
     * *Cannot* use this stream any more
 
-### Output Streams
+### Output File Streams
 
 Reading to (or printing to) file
 
@@ -232,7 +232,7 @@ After execution, the file will contain
 Notes:
 1. `#include <fstream>`
     * `<fstream>` includes methods for **file stream** input and output
-      * Contains `istream` (**input stream**) and `ostream` (**output stream**)
+      * Contains `ifstream` (**input file stream**) and `ofstream` (**output file stream**)
 2. `ofstream outFile;`
     * Defines an object of **output file stream** type with name "outFile"
 3. `outFile.open("outputfile");`
