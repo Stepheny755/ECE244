@@ -1,4 +1,5 @@
 # Lecture 12 - C++ Input/Output (IO)
+Oct.7/2020
 
 ## Output Streams
 
@@ -232,17 +233,3 @@ Notes:
 ## Pointer Schematics
 
 Just like schematics in circuits (ECE212), **pointer schematics** describe the *mapping* between pointers and variables
-
-
-#### main.cpp
-```c++
-int x;
-float y;
-...
-x = 5;
-y = 3.8;
-```
-|symbol|type|value|
-|-|-|-|
-|  |   | |
-|  |   | |
