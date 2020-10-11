@@ -1,7 +1,6 @@
 # Lecture 13 - Pointers, Scopes, and Arrays
 Oct.8/2020
 
-
 ## Pointers and the New Keyword
 
 Using pointers to change values of addresses and reference variables is cool
