@@ -38,7 +38,6 @@ void playMove(GameState& game_state) {
         if(countRow==3||countRow==-3){
           game_state.set_winCode(i+1);
           game_state.set_gameOver(true);
-          return;
         }
       }
     }
@@ -51,7 +50,6 @@ void playMove(GameState& game_state) {
         if(countCol==3||countCol==-3){
           game_state.set_winCode(i+4);
           game_state.set_gameOver(true);
-          return;
         }
       }
     }
@@ -65,12 +63,10 @@ void playMove(GameState& game_state) {
       if(count1==3||count1==-3){
         game_state.set_winCode(7);
         game_state.set_gameOver(true);
-        return;
       }
       if(count2==3||count2==-3){
         game_state.set_winCode(8);
         game_state.set_gameOver(true);
-        return;
       }
     }
 
