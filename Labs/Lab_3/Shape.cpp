@@ -20,8 +20,8 @@ Shape::Shape(string n, string t, int x_loc, int x_sz, int y_loc, int y_sz){
   type = t;
   x_location = x_loc;
   y_location = y_loc;
-  x_sz = x_size;
-  y_sz = y_size;
+  x_size = x_sz;
+  y_size = y_sz;
 }
 
 string Shape::getType(){
@@ -75,5 +75,5 @@ void Shape::setRotate(int angle){
 }
 
 void Shape::draw(){
-
+  cout << name << ": " << type << " " << x_location << " " << y_location << " " << x_size << " " << y_size <<  endl;
 }
