@@ -231,7 +231,7 @@ void delete_shape(stringstream& sstream){
       string name = shapesArray[shape_index]->getName();
       delete shapesArray[shape_index];
       shapesArray[shape_index]=nullptr;
-      cout << "Deleted shape " << name << endl;
+      cout << "Deleted shape " << name << endl ;
     }
   }
   return;
