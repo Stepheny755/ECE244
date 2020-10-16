@@ -40,6 +40,8 @@ void create_db(stringstream& sstream);
 void create_shape(stringstream& sstream);
 void draw_shape(stringstream& sstream);
 void delete_shape(stringstream& sstream);
+void move_shape(stringstream& sstream);
+void rotate_shape(stringstream& sstream);
 
 bool get_int(stringstream& sstream,int& var);
 bool get_str(stringstream& sstream,string& var);
@@ -91,9 +93,9 @@ void parse_commands(string s,stringstream& sstream){
   }else if(s == "create"){
     create_shape(sstream);
   }else if(s == "move"){
-
+    move_shape(sstream);
   }else if(s == "rotate"){
-
+    rotate_shape(sstream);
   }else if(s == "draw"){
     draw_shape(sstream);
   }else if(s == "delete"){
@@ -146,8 +148,8 @@ void create_shape(stringstream& sstream){
     return;
   }
 
-  if(false){
-    perr("shape name exists");
+  if(find_shape(name)>=0){
+    perr("shape "+name+" exists");
     return;
   }
 
@@ -180,6 +182,17 @@ void create_shape(stringstream& sstream){
   //cout << name << " " << type << " " << locx << " " << locy << " " << sx << " " << sy <<  endl;
   delete temp;
 
+  if(type == "circle"){
+    if(sx!=sy){
+      perr("invalid value");
+      return;
+    }
+  }
+  if(sx<0 || sy<0){
+    perr("invalid value");
+    return;
+  }
+
   int ind = create_new_shape(name,type,locx,locy,sx,sy);
   if(ind >= 0){
     cout << "Created ";
@@ -191,6 +204,18 @@ void create_shape(stringstream& sstream){
 void draw_shape(stringstream& sstream){
   string cmd;
   sstream >> cmd;
+
+  if(!sstream.eof()){
+    perr("too many arguments");
+    clear_ss(sstream);
+    return;
+  }
+
+  if(sstream.fail()){
+    perr("too few arguments");
+    clear_ss(sstream);
+    return;
+  }
 
   if(cmd == "all"){
     cout << "Drew all shapes" << endl;
@@ -215,6 +240,18 @@ void delete_shape(stringstream& sstream){
   string cmd;
   sstream >> cmd;
 
+  if(!sstream.eof()){
+    perr("too many arguments");
+    clear_ss(sstream);
+    return;
+  }
+
+  if(sstream.fail()){
+    perr("too few arguments");
+    clear_ss(sstream);
+    return;
+  }
+
   if(cmd == "all"){
     cout << "Deleted: all shapes" << endl;
     for(int i = 0;i < max_shapes;i++){
@@ -231,10 +268,71 @@ void delete_shape(stringstream& sstream){
       string name = shapesArray[shape_index]->getName();
       delete shapesArray[shape_index];
       shapesArray[shape_index]=nullptr;
-      cout << "Deleted shape " << name << endl ;
+      cout << "Deleted shape " << name << endl;
     }
   }
   return;
+}
+
+void move_shape(stringstream& sstream){
+  string cmd,slocx,slocy;
+  int locx,locy;
+  sstream >> cmd >> slocx >> slocy;
+
+  stringstream* temp = new stringstream(slocx);
+  if(!get_int(*temp,locx)){ return; }
+  temp = new stringstream(slocy);
+  if(!get_int(*temp,locy)){ return; }
+
+  if(!sstream.eof()){
+    perr("too many arguments");
+    clear_ss(sstream);
+    return;
+  }
+
+  if(sstream.fail()){
+    perr("too few arguments");
+    clear_ss(sstream);
+    return;
+  }
+
+  int shape_index = find_shape(cmd);
+  if(shape_index < 0){
+    perr("shape "+cmd+" not found");
+  }else{
+    shapesArray[shape_index]->setXlocation(locx);
+    shapesArray[shape_index]->setYlocation(locy);
+    cout << "Moved " << cmd << " to " << locx << " " << locy << endl;
+  }
+}
+
+void rotate_shape(stringstream& sstream){
+  string cmd,sangle;
+  int angle;
+  sstream >> cmd >> sangle;
+
+  stringstream* temp = new stringstream(sangle);
+  if(!get_int(*temp,angle)){ return; }
+
+  if(!sstream.eof()){
+    perr("too many arguments");
+    clear_ss(sstream);
+    return;
+  }
+
+  if(sstream.fail()){
+    perr("too few arguments");
+    clear_ss(sstream);
+    return;
+  }
+
+  int shape_index = find_shape(cmd);
+  if(shape_index < 0){
+    perr("shape "+cmd+" not found");
+  }else{
+    shapesArray[shape_index]->setRotate(angle);
+    cout << "Rotated " << cmd << " by " << angle << " degrees" << endl;
+  }
 }
 
 int create_new_shape(string name,string type,int locx,int locy,int sx,int sy){

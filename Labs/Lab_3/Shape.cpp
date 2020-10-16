@@ -71,7 +71,7 @@ void Shape::setYsize(int y_sz){
 }
 
 void Shape::setRotate(int angle){
-  this->rotation=angle;
+  this->rotation=angle+rotation;
 }
 
 void Shape::draw(){
