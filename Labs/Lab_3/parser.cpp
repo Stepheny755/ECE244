@@ -30,7 +30,7 @@ int shapeCount = 0;
 int max_shapes;
 
 string shapes[] = {"ellipse","circle","rectangle","triangle"};
-string commands[] = {"maxShapes","create","move","rotate","draw","delete"};
+string reserved[] = {"maxShapes","create","move","rotate","draw","delete","all"};
 
 // ECE244 Student: you may want to add the prototype of
 // helper functions you write here
@@ -43,8 +43,7 @@ void delete_shape(stringstream& sstream);
 void move_shape(stringstream& sstream);
 void rotate_shape(stringstream& sstream);
 
-bool get_int(stringstream& sstream,int& var);
-bool get_str(stringstream& sstream,string& var);
+int get_int(string s,int& var);
 
 int create_new_shape(string name,string type,int locx,int locy,int sx,int sy);
 int find_shape(string name);
@@ -107,6 +106,12 @@ void parse_commands(string s,stringstream& sstream){
 }
 
 void create_db(stringstream& sstream){
+  for(int i = 0;i < max_shapes;i++){
+    if(shapesArray[i]){
+      delete shapesArray[i];
+      shapesArray[i]=nullptr;
+    }
+  }
   delete shapesArray;
   shapesArray = nullptr;
   //TODO: remove dangling pointers upon shapesArray deletion
@@ -115,13 +120,15 @@ void create_db(stringstream& sstream){
   string smax;
   sstream >> smax;
 
-  if(!sstream.eof()){
-    perr("too many arguments");
-    return;
-  }
-
-  stringstream temp(smax);
-  if(get_int(temp,max_shapes)){
+  if(get_int(smax,max_shapes)){
+    if(max_shapes<0){
+      perr("invalid value");
+      return;
+    }
+    if(!sstream.eof()){
+      perr("too many arguments");
+      return;
+    }
     shapesArray = new Shape*[max_shapes];
     cout << "New database: max shapes is " << max_shapes << endl;
   }
@@ -129,19 +136,23 @@ void create_db(stringstream& sstream){
 }
 
 void create_shape(stringstream& sstream){
-  int locx,locy,sx,sy;
+  int locx,locy,sx,sy,valid=1;
   string name,type,slocx,slocy,ssx,ssy;
-
-  if(shapeCount>=max_shapes){
-    perr("shape array is full");
-    return;
-  }
 
   sstream >> name >> type;
   sstream >> slocx >> slocy >> ssx >> ssy;
   //cout << name << " " << type << " " << slocx << " " << slocy << " " << ssx << " " << ssy <<  endl;
   //cout << sstream.fail() << endl;
   //cout << sstream.eof() << endl;
+
+  if(get_int(slocx,locx)==-1){ valid = -1; return; }
+  if(get_int(slocy,locy)==-1){ valid = -1; return; }
+  if(get_int(ssx,sx)==-1){ valid = -1; return; }
+  if(get_int(ssy,sy)==-1){ valid = -1; return; }
+  if(get_int(slocx,locx)==0){ valid = 0; }
+  if(get_int(slocy,locy)==0){ valid = 0; }
+  if(get_int(ssx,sx)==0){ valid = 0; }
+  if(get_int(ssy,sy)==0){ valid = 0; }
 
   if(is_shape(name)||is_command(name)){
     perr("invalid shape name");
@@ -153,19 +164,23 @@ void create_shape(stringstream& sstream){
     return;
   }
 
-  if(!is_shape(type)){
+  if(type!="" && !is_shape(type)){
     perr("invalid shape type");
     return;
   }
 
-  stringstream* temp = new stringstream(slocx);
-  if(!get_int(*temp,locx)){ return; }
-  temp = new stringstream(slocy);
-  if(!get_int(*temp,locy)){ return; }
-  temp = new stringstream(ssx);
-  if(!get_int(*temp,sx)){ return; }
-  temp = new stringstream(ssy);
-  if(!get_int(*temp,sy)){ return; }
+  //stringstream* temp = new stringstream(slocx)
+
+  if(valid==1){
+    if(type == "circle" && sx!=sy){
+      perr("invalid value");
+      return;
+    }
+    if(sx<0 || sy<0 || locx<0 || locy<0){
+      perr("invalid value");
+      return;
+    }
+  }
 
   if(!sstream.eof()){
     perr("too many arguments");
@@ -180,16 +195,9 @@ void create_shape(stringstream& sstream){
   }
 
   //cout << name << " " << type << " " << locx << " " << locy << " " << sx << " " << sy <<  endl;
-  delete temp;
 
-  if(type == "circle"){
-    if(sx!=sy){
-      perr("invalid value");
-      return;
-    }
-  }
-  if(sx<0 || sy<0){
-    perr("invalid value");
+  if(shapeCount>=max_shapes){
+    perr("shape array is full");
     return;
   }
 
@@ -205,6 +213,12 @@ void draw_shape(stringstream& sstream){
   string cmd;
   sstream >> cmd;
 
+  int shape_index = find_shape(cmd);
+  if(cmd!="" && cmd!="all" && find_shape(cmd)<0){
+    perr("shape "+cmd+" not found");
+    return;
+  }
+
   if(!sstream.eof()){
     perr("too many arguments");
     clear_ss(sstream);
@@ -219,19 +233,14 @@ void draw_shape(stringstream& sstream){
 
   if(cmd == "all"){
     cout << "Drew all shapes" << endl;
-    for(int i = 0;i < max_shapes;i++){
+    for(int i = 0;i < shapeCount;i++){
       if(shapesArray[i]){
         shapesArray[i]->draw();
       }
     }
   }else{
-    int shape_index = find_shape(cmd);
-    if(shape_index < 0){
-      perr("shape "+cmd+" not found");
-    }else{
-      cout << "Drew ";
-      shapesArray[shape_index]->draw();
-    }
+    cout << "Drew ";
+    shapesArray[shape_index]->draw();
   }
   return;
 }
@@ -239,6 +248,12 @@ void draw_shape(stringstream& sstream){
 void delete_shape(stringstream& sstream){
   string cmd;
   sstream >> cmd;
+
+  int shape_index = find_shape(cmd);
+  if(cmd!="" && cmd!="all" && find_shape(cmd)<0){
+    perr("shape "+cmd+" not found");
+    return;
+  }
 
   if(!sstream.eof()){
     perr("too many arguments");
@@ -261,28 +276,36 @@ void delete_shape(stringstream& sstream){
       }
     }
   }else{
-    int shape_index = find_shape(cmd);
-    if(shape_index < 0){
-      perr("shape "+cmd+" not found");
-    }else{
-      string name = shapesArray[shape_index]->getName();
-      delete shapesArray[shape_index];
-      shapesArray[shape_index]=nullptr;
-      cout << "Deleted shape " << name << endl;
-    }
+    string name = shapesArray[shape_index]->getName();
+    delete shapesArray[shape_index];
+    shapesArray[shape_index]=nullptr;
+    cout << "Deleted shape " << name << endl;
   }
   return;
 }
 
 void move_shape(stringstream& sstream){
   string cmd,slocx,slocy;
-  int locx,locy;
+  int locx,locy,valid=1;
   sstream >> cmd >> slocx >> slocy;
 
-  stringstream* temp = new stringstream(slocx);
-  if(!get_int(*temp,locx)){ return; }
-  temp = new stringstream(slocy);
-  if(!get_int(*temp,locy)){ return; }
+  if(get_int(slocx,locx)==-1){ valid = -1; return; }
+  if(get_int(slocy,locy)==-1){ valid = -1; return; }
+  if(get_int(slocx,locx)==0){ valid = 0; }
+  if(get_int(slocy,locy)==0){ valid = 0; }
+
+  int shape_index = find_shape(cmd);
+  if(cmd!="" && find_shape(cmd)<0){
+    perr("shape "+cmd+" not found");
+    return;
+  }
+
+  if(valid==1){
+    if(locx<0||locy<0){
+      perr("invalid value");
+      return;
+    }
+  }
 
   if(!sstream.eof()){
     perr("too many arguments");
@@ -296,23 +319,31 @@ void move_shape(stringstream& sstream){
     return;
   }
 
-  int shape_index = find_shape(cmd);
-  if(shape_index < 0){
-    perr("shape "+cmd+" not found");
-  }else{
-    shapesArray[shape_index]->setXlocation(locx);
-    shapesArray[shape_index]->setYlocation(locy);
-    cout << "Moved " << cmd << " to " << locx << " " << locy << endl;
-  }
+  shapesArray[shape_index]->setXlocation(locx);
+  shapesArray[shape_index]->setYlocation(locy);
+  cout << "Moved " << cmd << " to " << locx << " " << locy << endl;
 }
 
 void rotate_shape(stringstream& sstream){
   string cmd,sangle;
-  int angle;
+  int angle,valid=1;
   sstream >> cmd >> sangle;
 
-  stringstream* temp = new stringstream(sangle);
-  if(!get_int(*temp,angle)){ return; }
+  if(get_int(sangle,angle)==-1){ valid = -1; return; }
+  if(get_int(sangle,angle)==0){ valid = 0; }
+
+  int shape_index = find_shape(cmd);
+  if(cmd!="" && find_shape(cmd)<0){
+    perr("shape "+cmd+" not found");
+    return;
+  }
+
+  if(valid==1){
+    if(angle<0 || angle>360){
+      perr("invalid value");
+      return;
+    }
+  }
 
   if(!sstream.eof()){
     perr("too many arguments");
@@ -326,13 +357,8 @@ void rotate_shape(stringstream& sstream){
     return;
   }
 
-  int shape_index = find_shape(cmd);
-  if(shape_index < 0){
-    perr("shape "+cmd+" not found");
-  }else{
-    shapesArray[shape_index]->setRotate(angle);
-    cout << "Rotated " << cmd << " by " << angle << " degrees" << endl;
-  }
+  shapesArray[shape_index]->setRotate(angle);
+  cout << "Rotated " << cmd << " by " << angle << " degrees" << endl;
 }
 
 int create_new_shape(string name,string type,int locx,int locy,int sx,int sy){
@@ -346,7 +372,7 @@ int create_new_shape(string name,string type,int locx,int locy,int sx,int sy){
 }
 
 int find_shape(string name){
-  for(int i = 0;i < max_shapes;i++){
+  for(int i = 0;i < shapeCount;i++){
     if(shapesArray[i] && shapesArray[i]->getName()==name){
       return i;
     }
@@ -354,22 +380,26 @@ int find_shape(string name){
   return -1;
 }
 
-bool get_int(stringstream& sstream,int& var){
+int get_int(string s,int& var){
   int x;
+  string temp;
+  stringstream sstream(s);
   sstream >> x;
   if(!sstream.fail()){
     if(sstream.peek()=='.'){
       perr("invalid argument");
+      return -1;
     }else{
       var = x;
-      return true;
+      return 1;
     }
   }else if(sstream.eof()){
-    perr("too few arguments");
+    return 0;
   }else{
     perr("invalid argument");
+    return -1;
   }
-  return false;
+  return 0;
 }
 
 void clear_ss(stringstream& sstream){
@@ -378,8 +408,8 @@ void clear_ss(stringstream& sstream){
 }
 
 bool is_command(string s){
-  for(int i = 0;i < sizeof(commands)/sizeof(commands[0]);i++){
-    if(s == commands[i]){
+  for(int i = 0;i < sizeof(reserved)/sizeof(reserved[0]);i++){
+    if(s == reserved[i]){
       return true;
     }
   }
