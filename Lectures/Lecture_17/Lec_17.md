@@ -1,4 +1,4 @@
-# Operator Overloading
+# Lecture 17 - Operator Overloading
 Oct. 20/2020
 
 *Note-takers Note*: The fire alarm in my building is being tested today, please excuse notes if I miss anything. Sorry!

@@ -3,7 +3,7 @@ Oct. 21/2020
 
 ## Const Modifier
 
-Providing protections to X and Y when calling `X+Y`
+We want to provide protections to X and Y when calling `X+Y`
 
 #### time.cpp
 ```c++
@@ -39,7 +39,7 @@ So when we pass the sum value out *by value*, the value of `sum` inside `operato
 
 ## Complex Numbers Class
 
-Want to design and write a C++ class that allows us to create and manipulate complex numbers
+We want to design and write a C++ class that allows us to create and manipulate complex numbers
 * Consists of *real part* and *imaginary part*
 * Example usage:
 
@@ -140,6 +140,8 @@ void complex::print() const {
   cout << “(“ << real << “,” << imag << “)”;
 }
 ```
+Notes:
+* The `const` term is used in certain function definitions to avoid overwriting variables
 
 ### Operator+
 
@@ -210,7 +212,8 @@ Notes:
     * This **overloaded operator** returns a `bool`
       * Not every overloaded operator needs to return an object
 2. Is `real==rhs.real` and `imag==rhs.imag` recursion?
-    * No, the types of `real`, `rhs.real`, `imag`, `rhs.imag` is float
+    * Are we calling `operator==` again?
+    * No, the types of `real`, `rhs.real`, `imag`, `rhs.imag` are floats
 
 ## Exercises
 
@@ -231,7 +234,7 @@ Notes:
 ```
 Q:
 1. Which constructors are called?
-    * **default constructor**, **two float constructor**, **copy constructor**
+    * **default constructor**, constructor w/ two floats, **copy constructor**
 2. How many times is the destructor called?
     * 5
       * a, b, c, d, p
@@ -263,7 +266,14 @@ Q:
       * `a = c + b;` -> `a.operator=( c.operator+(b) );`
     * Figure out which constructors are called by the **overloaded operators**
 2. How many times is the destructor called?
-    * 10
+    * 11
+      * This might be wrong, my personal counting
+      * a, b, c, d, p
+      * Inside scope of:
+        * 3x `operator=`
+        * `operator-`
+        * `operator+`
+        * `operator/`
 3. How many copies of object a are made?
     * 1
       * `complex b(a);`
