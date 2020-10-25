@@ -75,7 +75,6 @@ int main() {
 
         parse_commands(command,lineStream);
 
-
         // Once the command has been processed, prompt for the
         // next command
         cout << "> ";          // Prompt for input
@@ -106,21 +105,12 @@ void parse_commands(string s,stringstream& sstream){
 }
 
 void create_db(stringstream& sstream){
-  for(int i = 0;i < max_shapes;i++){
-    if(shapesArray[i]){
-      delete shapesArray[i];
-      shapesArray[i]=nullptr;
-    }
-  }
-  delete shapesArray;
-  shapesArray = nullptr;
   //TODO: remove dangling pointers upon shapesArray deletion
-  shapeCount = 0;
 
   string smax;
   sstream >> smax;
 
-  if(get_int(smax,max_shapes)){
+  if(get_int(smax,max_shapes)>=0){
     if(max_shapes<0){
       perr("invalid value");
       return;
@@ -129,6 +119,23 @@ void create_db(stringstream& sstream){
       perr("too many arguments");
       return;
     }
+    if(sstream.fail()){
+      perr("too few arguments");
+      return;
+    }
+
+
+    for(int i = 0;i < shapeCount;i++){
+      if(shapesArray[i]){
+        delete shapesArray[i];
+        shapesArray[i]=nullptr;
+      }
+    }
+    delete shapesArray;
+    shapesArray = nullptr;
+
+    shapeCount = 0;
+
     shapesArray = new Shape*[max_shapes];
     cout << "New database: max shapes is " << max_shapes << endl;
   }
@@ -386,7 +393,7 @@ int get_int(string s,int& var){
   stringstream sstream(s);
   sstream >> x;
   if(!sstream.fail()){
-    if(sstream.peek()=='.'){
+    if(sstream.peek()!=' '&&!sstream.eof()){
       perr("invalid argument");
       return -1;
     }else{
