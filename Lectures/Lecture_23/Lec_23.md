@@ -347,4 +347,3 @@ Notes:
 2. We want the **copy constructor** to have a **deep** implementation
   * If we copy a list, we want to keep all the *next* nodes
 3. `linkedList(const linkedList& other)`
-  *
