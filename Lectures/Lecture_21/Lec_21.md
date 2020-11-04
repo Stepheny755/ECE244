@@ -1,8 +1,8 @@
-# Lecture 20 - When Objects have Pointers
-Oct. 27/2020
+# Lecture 21 - An Abstract String Class
+Oct. 28/2020
 
 Previously, we've dealt with objects with **pointer** data members
-* Implement the `String` class as an example
+* Let's implement a custom/abstract `String` class as an example
   * `String`, uppercase S
     * Different from built in `string`
 
