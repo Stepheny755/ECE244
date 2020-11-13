@@ -17,7 +17,7 @@
 #include "Shape.h"
 
 // This class represents a node in the ShapeList linked list
-// Each ShapeNode has two members: a poiter to a Shape object
+// Each ShapeNode has two members: a pointer to a Shape object
 // and a pointer to the next node in the list
 
 class ShapeNode {
