@@ -7,4 +7,3 @@ Parser.exe: $(OBJS)
 	g++ -std=c++11 -c -g $< -o $@
 clean:
 	rm -f *.o  Parser.exe core
-
