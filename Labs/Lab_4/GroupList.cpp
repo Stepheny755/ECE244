@@ -61,6 +61,9 @@ GroupNode* GroupList::remove(string name){
     temp = ptr;
     ptr = ptr->getNext();
   }
+  if(ptr == NULL){
+    return nullptr;
+  }
   if(ptr==head){
     head=head->getNext();
     delete ptr;
