@@ -31,8 +31,7 @@ GroupList* gList;
 // helper functions you write here
 void parse_commands(string s,stringstream& sstream);
 
-void create_db(stringstream& sstream);
-void create_shape(stringstream& sstream);
+void make_shape(stringstream& sstream);
 void draw_shape(stringstream& sstream);
 void delete_shape(stringstream& sstream);
 void move_shape(stringstream& sstream);
@@ -87,63 +86,25 @@ int main() {
 
 
 void parse_commands(string s,stringstream& sstream){
-  if(s == "maxShapes"){
-    create_db(sstream);
-  }else if(s == "create"){
-    create_shape(sstream);
+  if(s == "shape"){
+    make_shape();
   }else if(s == "group"){
-
+    make_group();
+  }else if(s == "draw"){
+    draw();
   }else if(s == "move"){
     move_shape(sstream);
-  }else if(s == "draw"){
-    draw_shape(sstream);
   }else if(s == "delete"){
-    delete_shape(sstream);
+    delete_thing(sstream);
   }else{
     perr("invalid command");
   }
   return;
 }
 
-void create_db(stringstream& sstream){
-  //TODO: remove dangling pointers upon shapesArray deletion
-
-  string smax;
-  sstream >> smax;
-
-  if(get_int(smax,max_shapes)>=0){
-    if(max_shapes<0){
-      perr("invalid value");
-      return;
-    }
-    if(!sstream.eof()){
-      perr("too many arguments");
-      return;
-    }
-    if(sstream.fail()){
-      perr("too few arguments");
-      return;
-    }
 
 
-    for(int i = 0;i < shapeCount;i++){
-      if(shapesArray[i]){
-        delete shapesArray[i];
-        shapesArray[i]=nullptr;
-      }
-    }
-    delete shapesArray;
-    shapesArray = nullptr;
-
-    shapeCount = 0;
-
-    shapesArray = new Shape*[max_shapes];
-    cout << "New database: max shapes is " << max_shapes << endl;
-  }
-  return;
-}
-
-void create_shape(stringstream& sstream){
+void make_shape(stringstream& sstream){
   int locx,locy,sx,sy,valid=1;
   string name,type,slocx,slocy,ssx,ssy;
 
@@ -217,39 +178,10 @@ void create_shape(stringstream& sstream){
   return;
 }
 
-void draw_shape(stringstream& sstream){
-  string cmd;
-  sstream >> cmd;
+void draw_shape(){
+  cout << "drawing: " << endl;
+  gList()->print();
 
-  int shape_index = find_shape(cmd);
-  if(cmd!="" && cmd!="all" && find_shape(cmd)<0){
-    perr("shape "+cmd+" not found");
-    return;
-  }
-
-  if(!sstream.eof()){
-    perr("too many arguments");
-    clear_ss(sstream);
-    return;
-  }
-
-  if(sstream.fail()){
-    perr("too few arguments");
-    clear_ss(sstream);
-    return;
-  }
-
-  if(cmd == "all"){
-    cout << "Drew all shapes" << endl;
-    for(int i = 0;i < shapeCount;i++){
-      if(shapesArray[i]){
-        shapesArray[i]->draw();
-      }
-    }
-  }else{
-    cout << "Drew ";
-    shapesArray[shape_index]->draw();
-  }
   return;
 }
 

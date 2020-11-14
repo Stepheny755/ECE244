@@ -90,6 +90,11 @@ int main(){
   gList->remove("g2");
   gList->print();
 
+  p("Place 8");
+
+  gList->insert(new GroupNode("pool"));
+  gList->print();
+
   //delete s1,s2,s3;
   //delete sn1,sn2,sn3;
   delete gList;
