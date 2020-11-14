@@ -51,9 +51,10 @@ ShapeNode* ShapeList::find(string name) const{
 void ShapeList::insert(ShapeNode* s){
   if(head==NULL){
     head = s;
-    s->setNext(NULL);
+    s->setNext((ShapeNode*)NULL);
   }else{
     ShapeNode* ptr = head;
+    cout << ptr << endl;
     while(ptr->getNext()!=NULL){
       ptr=ptr->getNext();
     }
@@ -65,7 +66,9 @@ void ShapeList::insert(ShapeNode* s){
 ShapeNode* ShapeList::remove(string name){
   ShapeNode* ptr = head;
   ShapeNode* temp = NULL;
-  if(ptr == NULL) return NULL;
+  if(ptr == NULL){
+    return NULL;
+  }
   while(ptr!=NULL){
     if((ptr->getShape())->getName()==name){
       break;
@@ -75,8 +78,7 @@ ShapeNode* ShapeList::remove(string name){
   }
   if(ptr==head){
     head=head->getNext();
-    delete ptr;
-    return NULL;
+    return ptr;
   }
   temp->setNext(ptr->getNext());
   return ptr;

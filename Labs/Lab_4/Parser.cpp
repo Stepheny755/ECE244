@@ -38,7 +38,7 @@ void move_shape(stringstream& sstream);
 void delete_thing(stringstream& sstream);
 
 ShapeNode* create_new_shapenode(string name,string type,int locx,int locy,int sx,int sy);
-ShapeNode* find_shapenode(string name);
+GroupNode* find_groupnode_containing_shapenode(string name);
 GroupNode* find_groupnode(string name);
 
 int get_int(string s,int& var);
@@ -147,12 +147,18 @@ void move_shape(stringstream& sstream){
   sstream >> name1 >> name2;
 
   if(parse_valid_name(name1)&&parse_valid_name(name2)){
-    ShapeNode* temp = find_shapenode(name1);
-    GroupNode* temp = find_groupnode(name2);
-    if(temp==NULL){
+    GroupNode* temp1 = find_groupnode_containing_shapenode(name1);
+    GroupNode* temp2 = find_groupnode(name2);
+    if(temp1==NULL){
       perr("shape "+name1+" not found");
       return;
+    }else if(temp2==NULL){
+      perr("group "+name2+" not found");
+      return;
     }
+    ShapeNode* sn1 = temp1->getShapeList()->remove(name1);
+    temp2->getShapeList()->insert(sn1);
+    cout << "moved " << name1 << " to " << name2 << endl;
   }
 }
 void delete_thing(stringstream& sstream){
@@ -202,12 +208,12 @@ bool find_name_exists(string name){
   return false;
 }
 
-ShapeNode* find_shapenode(string name){
+GroupNode* find_groupnode_containing_shapenode(string name){
   GroupNode* ptr = gList->getHead();
   while(ptr!=NULL){
     ShapeNode* temp = ptr->getShapeList()->find(name);
     if(temp!=NULL){
-      return temp;
+      return ptr;
     }
     ptr=ptr->getNext();
   }
@@ -215,8 +221,14 @@ ShapeNode* find_shapenode(string name){
 }
 
 GroupNode* find_groupnode(string name){
-
-  
+  GroupNode* ptr = gList->getHead();
+  while(ptr!=NULL){
+    if(ptr->getName()==name){
+      return ptr;
+    }
+    ptr=ptr->getNext();
+  }
+  return NULL;
 }
 
 int get_int(string s,int& var){
