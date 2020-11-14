@@ -32,10 +32,10 @@ GroupList* gList;
 void parse_commands(string s,stringstream& sstream);
 
 void make_shape(stringstream& sstream);
-void draw_shape(stringstream& sstream);
-void delete_shape(stringstream& sstream);
+void make_group(stringstream& sstream);
+void draw();
 void move_shape(stringstream& sstream);
-void rotate_shape(stringstream& sstream);
+void delete_thing(stringstream& sstream);
 
 int get_int(string s,int& var);
 
@@ -89,7 +89,7 @@ void parse_commands(string s,stringstream& sstream){
   if(s == "shape"){
     make_shape();
   }else if(s == "group"){
-    make_group();
+    make_group(sstream);
   }else if(s == "draw"){
     draw();
   }else if(s == "move"){
@@ -264,23 +264,31 @@ void move_shape(stringstream& sstream){
   cout << "Moved " << cmd << " to " << locx << " " << locy << endl;
 }
 
-int create_new_shape(string name,string type,int locx,int locy,int sx,int sy){
+ShapeNode* create_new_shape(string name,string type,int locx,int locy,int sx,int sy){
   if(false){
     //TODO: check if shape already exists in shapesArray
-    return -1;
+    return NULL;
   }
-
-  shapesArray[shapeCount] = new Shape(name,type,locx,sx,locy,sy);
-  return shapeCount++;
+  Shape* shape_ptr = new Shape(name,type,locx,locy,sx,sy);
+  ShapeNode* shapenode_ptr = new ShapeNode();
+  shapenode_ptr->setShape(shape_ptr);
+  return shapenode_ptr;
 }
 
-int find_shape(string name){
-  for(int i = 0;i < shapeCount;i++){
-    if(shapesArray[i] && shapesArray[i]->getName()==name){
-      return i;
+bool find_name(string name){
+  streambuf* def_cout = cout.rdbuf();
+  stringstream sstream;
+  cout.rdbuf(sstream.rdbuf());
+  gList->print();
+  cout.rdbuf(def_cout);
+  while(!sstream.eof()){
+    string temp;
+    sstream >> temp;
+    if(temp.find(name)!=string::npos){
+      return true;
     }
   }
-  return -1;
+  return false;
 }
 
 int get_int(string s,int& var){
@@ -311,8 +319,8 @@ void clear_ss(stringstream& sstream){
 }
 
 bool is_command(string s){
-  for(int i = 0;i < sizeof(reserved)/sizeof(reserved[0]);i++){
-    if(s == reserved[i]){
+  for(int i = 0;i < sizeof(reserved)/sizeof(keyWordsList[0]);i++){
+    if(s == keyWordsList[i]){
       return true;
     }
   }
@@ -320,8 +328,8 @@ bool is_command(string s){
 }
 
 bool is_shape(string s){
-  for(int i = 0;i < sizeof(shapes)/sizeof(shapes[0]);i++){
-    if(s == shapes[i]){
+  for(int i = 0;i < sizeof(shapes)/sizeof(shapeTypesList[0]);i++){
+    if(s == shapeTypesList[i]){
       return true;
     }
   }

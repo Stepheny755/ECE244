@@ -11,12 +11,30 @@ using namespace std;
 #include "ShapeList.h"
 #include "GroupList.h"
 
+GroupList* gList;
+
 void nl(){ cout << "\n"; }
 void p(string s){ cout << s << endl; }
 
+bool find_name(string name){
+  streambuf* def_cout = cout.rdbuf();
+  stringstream sstream;
+  cout.rdbuf(sstream.rdbuf());
+  gList->print();
+  cout.rdbuf(def_cout);
+  while(!sstream.eof()){
+    string temp;
+    sstream >> temp;
+    if(temp.find(name)!=string::npos){
+      return true;
+    }
+  }
+  return false;
+}
+
 int main(){
 
-  GroupList* gList = new GroupList();
+  gList = new GroupList();
 
   // Create the pool group and add it to the group list
   GroupNode* poolGroup = new GroupNode(keyWordsList[NUM_KEYWORDS-1]);
@@ -75,6 +93,11 @@ int main(){
   sn3->setShape(s3);
   gList->getHead()->getShapeList()->insert(sn3);
   gList->print();
+  nl();
+  p("place 4.1");
+  cout << find_name(string("ab")) << endl;
+  cout << find_name(string("asdasd")) << endl;
+  nl();
 
   p("place 5");
 
@@ -94,6 +117,7 @@ int main(){
 
   gList->insert(new GroupNode("pool"));
   gList->print();
+
 
   //delete s1,s2,s3;
   //delete sn1,sn2,sn3;
