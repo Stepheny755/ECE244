@@ -167,7 +167,6 @@ void delete_thing(stringstream& sstream){
   sstream >> name;
 
   if(!parse_valid_name(name)){
-    perr("shape "+name+" not found");
     return;
   }
 
@@ -182,9 +181,18 @@ void delete_thing(stringstream& sstream){
   temp = find_groupnode(name);
   if(temp!=NULL){
     //delete one groupnode (move all items in groupnode->shapelist to pool)
-
+    ShapeList* shapes = temp->getShapeList();
+    ShapeList* pool = gList->getHead()->getShapeList();
+    while(shapes->getHead()!=NULL){
+      string current = shapes->getHead()->getShape()->getName();
+      ShapeNode* current_sn = shapes->remove(current);
+      pool->insert(current_sn);
+    }
+    delete gList->remove(name);
+    cout << name << ": deleted" << endl;
+    return;
   }
-
+  perr("shape "+name+" not found");
 }
 
 
@@ -299,5 +307,5 @@ bool is_shape(string s){
 }
 
 void perr(string s){
-  cout << "Error: " << s << endl;
+  cout << "error: " << s << endl;
 }
