@@ -1,4 +1,4 @@
-SRCS = Parser.cpp Shape.cpp ShapeNode.cpp ShapeList.cpp GroupNode.cpp GroupList.cpp
+SRCS = test_ll.cpp Shape.cpp ShapeNode.cpp ShapeList.cpp GroupNode.cpp GroupList.cpp
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))
 
 Parser.exe: $(OBJS)

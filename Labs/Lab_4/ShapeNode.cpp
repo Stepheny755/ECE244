@@ -27,18 +27,18 @@ Shape* ShapeNode::getShape() const{
   return myShape;
 }
 
-void ShapeNode::setShape(Shape* ptr) const{
-  mySHape = ptr;
+void ShapeNode::setShape(Shape* ptr){
+  myShape = ptr;
 }
 
 ShapeNode* ShapeNode::getNext() const{
   return next;
 }
 
-void ShapeNext::setNext(ShapeNode* ptr){
+void ShapeNode::setNext(ShapeNode* ptr){
   next = ptr;
 }
 
-void print() const{
+void ShapeNode::print() const{
   myShape->draw();
 }

@@ -11,15 +11,17 @@
 
 //  ECE244 Student:
 //  Write the implementation (and only the implementation) of the ShapeList class below
+#include "ShapeList.h"
 
 ShapeList::ShapeList(){
   head = nullptr;
 }
 
 ShapeList::~ShapeList(){
-  ShapeNode* ptr = head,temp = null;
+  ShapeNode* ptr = head;
+  ShapeNode* temp = NULL;
   while(ptr!=NULL){
-    temp = ptr->next;
+    temp = ptr->getNext();
     delete ptr;
     ptr=temp;
   }
@@ -34,13 +36,14 @@ void ShapeList::setHead(ShapeNode* ptr){
 }
 
 ShapeNode* ShapeList::find(string name) const{
-  ShapeNode* ptr = head,temp = NULL;
-  if(ptr == NULL) return;
+  ShapeNode* ptr = head;
+  ShapeNode* temp = NULL;
+  if(ptr == NULL) return NULL;
   while(ptr!=NULL){
-    if((ptr->myShape).getName()==name){
+    if((ptr->getShape())->getName()==name){
       return ptr;
     }
-    ptr = ptr->next;
+    ptr = ptr->getNext();
   }
   return nullptr;
 }
@@ -48,40 +51,41 @@ ShapeNode* ShapeList::find(string name) const{
 void ShapeList::insert(ShapeNode* s){
   if(head==NULL){
     head = s;
-    s->next = NULL;
+    s->setNext(NULL);
   }else{
     ShapeNode* ptr = head;
-    while(ptr->next!=NULL){
-      ptr=ptr->next;
+    while(ptr->getNext()!=NULL){
+      ptr=ptr->getNext();
     }
-    ptr->next = s;
-    s->next = NULL;
+    ptr->setNext(s);
+    s->setNext(NULL);
   }
 }
 
 ShapeNode* ShapeList::remove(string name){
-  ShapeNode* ptr = head,temp = NULL;
-  if(ptr == NULL) return;
+  ShapeNode* ptr = head;
+  ShapeNode* temp = NULL;
+  if(ptr == NULL) return NULL;
   while(ptr!=NULL){
-    if((ptr->myShape).getName()==name){
+    if((ptr->getShape())->getName()==name){
       break;
     }
     temp = ptr;
-    ptr = ptr->next;
+    ptr = ptr->getNext();
   }
   if(ptr==head){
-    head=head->next;
+    head=head->getNext();
     delete ptr;
-    return nullptr;
+    return NULL;
   }
-  temp->next = ptr->next;
+  temp->setNext(ptr->getNext());
   return ptr;
 }
 
 void ShapeList::print() const{
-  listNode* ptr = head;
+  ShapeNode* ptr = head;
   while(ptr!=NULL){
     ptr->print();
-    ptr=ptr->next;
+    ptr=ptr->getNext();
   }
 }

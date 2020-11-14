@@ -11,6 +11,7 @@
 
 //  ECE244 Student:
 //  Write the implementation (and only the implementation) of the Shape class below
+#include "Shape.h"
 
 Shape::Shape(string n, string t, int x_loc, int x_sz, int y_loc, int y_sz){
   name = n;

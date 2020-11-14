@@ -11,11 +11,13 @@
 
 //  ECE244 Student:
 //  Write the implementation (and only the implementation) of the GroupNode class below
-
+#include <iostream>
 #include "GroupNode.h"
 
 GroupNode::GroupNode(string n){
-  self->name = n;
+  this->name = n;
+  myShapeList = new ShapeList();
+  this->next = nullptr;
 }
 
 GroupNode::~GroupNode(){
@@ -43,5 +45,6 @@ void GroupNode::setNext(GroupNode* ptr){
 }
 
 void GroupNode::print() const{
-  myShapeList->print()
+  std::cout << name << ": " << std::endl;
+  myShapeList->print();
 }
