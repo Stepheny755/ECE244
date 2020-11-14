@@ -37,12 +37,15 @@ void draw();
 void move_shape(stringstream& sstream);
 void delete_thing(stringstream& sstream);
 
+ShapeNode* create_new_shapenode(string name,string type,int locx,int locy,int sx,int sy);
+ShapeNode* find_shapenode(string name);
+GroupNode* find_groupnode(string name);
+
 int get_int(string s,int& var);
-
-int create_new_shape(string name,string type,int locx,int locy,int sx,int sy);
-int find_shape(string name);
-
 void clear_ss(stringstream& sstream);
+bool parse_valid_name(string name);
+bool parse_valid_name_new(string name);
+bool find_name_exists(string name);
 bool is_shape(string s);
 bool is_command(string s);
 void perr(string s);
@@ -87,7 +90,7 @@ int main() {
 
 void parse_commands(string s,stringstream& sstream){
   if(s == "shape"){
-    make_shape();
+    make_shape(sstream);
   }else if(s == "group"){
     make_group(sstream);
   }else if(s == "draw"){
@@ -102,180 +105,88 @@ void parse_commands(string s,stringstream& sstream){
   return;
 }
 
-
-
 void make_shape(stringstream& sstream){
-  int locx,locy,sx,sy,valid=1;
+  int locx,locy,sx,sy;
   string name,type,slocx,slocy,ssx,ssy;
 
   sstream >> name >> type;
   sstream >> slocx >> slocy >> ssx >> ssy;
-  //cout << name << " " << type << " " << slocx << " " << slocy << " " << ssx << " " << ssy <<  endl;
-  //cout << sstream.fail() << endl;
-  //cout << sstream.eof() << endl;
 
-  if(get_int(slocx,locx)==-1){ valid = -1; return; }
-  if(get_int(slocy,locy)==-1){ valid = -1; return; }
-  if(get_int(ssx,sx)==-1){ valid = -1; return; }
-  if(get_int(ssy,sy)==-1){ valid = -1; return; }
-  if(get_int(slocx,locx)==0){ valid = 0; }
-  if(get_int(slocy,locy)==0){ valid = 0; }
-  if(get_int(ssx,sx)==0){ valid = 0; }
-  if(get_int(ssy,sy)==0){ valid = 0; }
+  get_int(slocx,locx);
+  get_int(slocy,locy);
+  get_int(ssx,sx);
+  get_int(ssy,sy);
 
-  if(is_shape(name)||is_command(name)){
-    perr("invalid shape name");
-    return;
+  if(parse_valid_name_new(name)){
+    ShapeNode* tmp = create_new_shapenode(name,type,locx,locy,sx,sy);
+    tmp->getShape()->draw();
+    GroupNode* pl = gList->getHead();
+    pl->getShapeList()->insert(tmp);
   }
-
-  if(find_shape(name)>=0){
-    perr("shape "+name+" exists");
-    return;
-  }
-
-  if(type!="" && !is_shape(type)){
-    perr("invalid shape type");
-    return;
-  }
-
-  //stringstream* temp = new stringstream(slocx)
-
-  if(valid==1){
-    if(type == "circle" && sx!=sy){
-      perr("invalid value");
-      return;
-    }
-    if(sx<0 || sy<0 || locx<0 || locy<0){
-      perr("invalid value");
-      return;
-    }
-  }
-
-  if(!sstream.eof()){
-    perr("too many arguments");
-    clear_ss(sstream);
-    return;
-  }
-
-  if(sstream.fail()){
-    perr("too few arguments");
-    clear_ss(sstream);
-    return;
-  }
-
-  //cout << name << " " << type << " " << locx << " " << locy << " " << sx << " " << sy <<  endl;
-
-  if(shapeCount>=max_shapes){
-    perr("shape array is full");
-    return;
-  }
-
-  int ind = create_new_shape(name,type,locx,locy,sx,sy);
-  if(ind >= 0){
-    cout << "Created ";
-    shapesArray[ind]->draw();
-  }
-  return;
 }
 
-void draw_shape(){
+void make_group(stringstream& sstream){
+  string name;
+  sstream >> name;
+
+  if(parse_valid_name_new(name)){
+    GroupNode* temp = new GroupNode(name);
+    gList->insert(temp);
+    cout << name << ": group" << endl;
+  }
+}
+
+void draw(){
   cout << "drawing: " << endl;
-  gList()->print();
-
-  return;
-}
-
-void delete_shape(stringstream& sstream){
-  string cmd;
-  sstream >> cmd;
-
-  int shape_index = find_shape(cmd);
-  if(cmd!="" && cmd!="all" && find_shape(cmd)<0){
-    perr("shape "+cmd+" not found");
-    return;
-  }
-
-  if(!sstream.eof()){
-    perr("too many arguments");
-    clear_ss(sstream);
-    return;
-  }
-
-  if(sstream.fail()){
-    perr("too few arguments");
-    clear_ss(sstream);
-    return;
-  }
-
-  if(cmd == "all"){
-    cout << "Deleted: all shapes" << endl;
-    for(int i = 0;i < max_shapes;i++){
-      if(shapesArray[i]){
-        delete shapesArray[i];
-        shapesArray[i]=nullptr;
-      }
-    }
-  }else{
-    string name = shapesArray[shape_index]->getName();
-    delete shapesArray[shape_index];
-    shapesArray[shape_index]=nullptr;
-    cout << "Deleted shape " << name << endl;
-  }
+  gList->print();
   return;
 }
 
 void move_shape(stringstream& sstream){
-  string cmd,slocx,slocy;
-  int locx,locy,valid=1;
-  sstream >> cmd >> slocx >> slocy;
+  string name1,name2;
+  sstream >> name1 >> name2;
 
-  if(get_int(slocx,locx)==-1){ valid = -1; return; }
-  if(get_int(slocy,locy)==-1){ valid = -1; return; }
-  if(get_int(slocx,locx)==0){ valid = 0; }
-  if(get_int(slocy,locy)==0){ valid = 0; }
-
-  int shape_index = find_shape(cmd);
-  if(cmd!="" && find_shape(cmd)<0){
-    perr("shape "+cmd+" not found");
-    return;
-  }
-
-  if(valid==1){
-    if(locx<0||locy<0){
-      perr("invalid value");
+  if(parse_valid_name(name1)&&parse_valid_name(name2)){
+    ShapeNode* temp = find_shapenode(name1);
+    GroupNode* temp = find_groupnode(name2);
+    if(temp==NULL){
+      perr("shape "+name1+" not found");
       return;
     }
   }
+}
+void delete_thing(stringstream& sstream){
 
-  if(!sstream.eof()){
-    perr("too many arguments");
-    clear_ss(sstream);
-    return;
-  }
-
-  if(sstream.fail()){
-    perr("too few arguments");
-    clear_ss(sstream);
-    return;
-  }
-
-  shapesArray[shape_index]->setXlocation(locx);
-  shapesArray[shape_index]->setYlocation(locy);
-  cout << "Moved " << cmd << " to " << locx << " " << locy << endl;
 }
 
-ShapeNode* create_new_shape(string name,string type,int locx,int locy,int sx,int sy){
-  if(false){
-    //TODO: check if shape already exists in shapesArray
-    return NULL;
-  }
+
+ShapeNode* create_new_shapenode(string name,string type,int locx,int locy,int sx,int sy){
   Shape* shape_ptr = new Shape(name,type,locx,locy,sx,sy);
   ShapeNode* shapenode_ptr = new ShapeNode();
   shapenode_ptr->setShape(shape_ptr);
   return shapenode_ptr;
 }
 
-bool find_name(string name){
+bool parse_valid_name(string name){
+  if(is_command(name)||is_shape(name)){
+    perr("invalid name");
+    return false;
+  }
+  return true;
+}
+
+bool parse_valid_name_new(string name){
+  if(is_command(name)||is_shape(name)){
+    perr("invalid name");
+    return false;
+  }else if(find_name_exists(name)){
+    perr("name "+name+" exists");
+    return false;
+  }
+  return true;
+}
+
+bool find_name_exists(string name){
   streambuf* def_cout = cout.rdbuf();
   stringstream sstream;
   cout.rdbuf(sstream.rdbuf());
@@ -289,6 +200,23 @@ bool find_name(string name){
     }
   }
   return false;
+}
+
+ShapeNode* find_shapenode(string name){
+  GroupNode* ptr = gList->getHead();
+  while(ptr!=NULL){
+    ShapeNode* temp = ptr->getShapeList()->find(name);
+    if(temp!=NULL){
+      return temp;
+    }
+    ptr=ptr->getNext();
+  }
+  return NULL;
+}
+
+GroupNode* find_groupnode(string name){
+
+  
 }
 
 int get_int(string s,int& var){
@@ -319,7 +247,7 @@ void clear_ss(stringstream& sstream){
 }
 
 bool is_command(string s){
-  for(int i = 0;i < sizeof(reserved)/sizeof(keyWordsList[0]);i++){
+  for(int i = 0;i < sizeof(keyWordsList)/sizeof(keyWordsList[0]);i++){
     if(s == keyWordsList[i]){
       return true;
     }
@@ -328,7 +256,7 @@ bool is_command(string s){
 }
 
 bool is_shape(string s){
-  for(int i = 0;i < sizeof(shapes)/sizeof(shapeTypesList[0]);i++){
+  for(int i = 0;i < sizeof(shapeTypesList)/sizeof(shapeTypesList[0]);i++){
     if(s == shapeTypesList[i]){
       return true;
     }
