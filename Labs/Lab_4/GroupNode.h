@@ -23,9 +23,9 @@
 
 class GroupNode {
 private:
-    string name;                           // name ofthe group
+    string name;                           // name of the group
     ShapeList* myShapeList;                // pointer to the list of shapes in group
-    GroupNode* next ;                      // pointer to next node in the list
+    GroupNode* next;                        // pointer to next node in the list
 public:
     GroupNode(string n);                   // sets group name to n and makes myShapeList
                                            // point to a new ShapeList; sets next to nullptr

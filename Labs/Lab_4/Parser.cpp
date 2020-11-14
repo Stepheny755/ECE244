@@ -52,7 +52,7 @@ int main() {
     // Create the groups list
     gList = new GroupList();
 
-    // Create the poo group and add it to the group list
+    // Create the pool group and add it to the group list
     GroupNode* poolGroup = new GroupNode(keyWordsList[NUM_KEYWORDS-1]);
     gList->insert(poolGroup);
 
@@ -91,10 +91,10 @@ void parse_commands(string s,stringstream& sstream){
     create_db(sstream);
   }else if(s == "create"){
     create_shape(sstream);
+  }else if(s == "group"){
+
   }else if(s == "move"){
     move_shape(sstream);
-  }else if(s == "rotate"){
-    rotate_shape(sstream);
   }else if(s == "draw"){
     draw_shape(sstream);
   }else if(s == "delete"){

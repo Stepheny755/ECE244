@@ -12,6 +12,36 @@
 //  ECE244 Student:
 //  Write the implementation (and only the implementation) of the GroupNode class below
 
+#include "GroupNode.h"
 
+GroupNode::GroupNode(string n){
+  self->name = n;
+}
 
+GroupNode::~GroupNode(){
+  delete myShapeList;
+}
 
+string GroupNode::getName() const{
+  return name;
+}
+
+ShapeList* GroupNode::getShapeList() const{
+  return myShapeList;
+}
+
+void GroupNode::setShapeList(ShapeList* ptr){
+  myShapeList = ptr;
+}
+
+GroupNode* GroupNode::getNext() const{
+  return next;
+}
+
+void GroupNode::setNext(GroupNode* ptr){
+  next = ptr;
+}
+
+void GroupNode::print() const{
+  myShapeList->print()
+}
