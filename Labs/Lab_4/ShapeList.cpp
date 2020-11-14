@@ -54,7 +54,6 @@ void ShapeList::insert(ShapeNode* s){
     s->setNext((ShapeNode*)NULL);
   }else{
     ShapeNode* ptr = head;
-    cout << ptr << endl;
     while(ptr->getNext()!=NULL){
       ptr=ptr->getNext();
     }

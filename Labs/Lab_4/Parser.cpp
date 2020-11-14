@@ -161,7 +161,29 @@ void move_shape(stringstream& sstream){
     cout << "moved " << name1 << " to " << name2 << endl;
   }
 }
+
 void delete_thing(stringstream& sstream){
+  string name;
+  sstream >> name;
+
+  if(!parse_valid_name(name)){
+    perr("shape "+name+" not found");
+    return;
+  }
+
+  GroupNode* temp = find_groupnode_containing_shapenode(name);
+  if(temp!=NULL){
+    //delete one shapenode
+    delete temp->getShapeList()->remove(name);
+    cout << name << ": deleted" << endl;
+    return;
+  }
+
+  temp = find_groupnode(name);
+  if(temp!=NULL){
+    //delete one groupnode (move all items in groupnode->shapelist to pool)
+
+  }
 
 }
 
