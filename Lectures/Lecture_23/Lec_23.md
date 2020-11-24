@@ -207,9 +207,9 @@ void linkedList::deleteNode(int k) {
 Addressing deleting the `head` node
 ```c++
 void linkedList::deleteNode(int k) {
-  if(tptr == NULL) return;
   listNode* tptr = head;
   listNode* pptr = NULL;
+  if(tptr == NULL) return;
   while (tptr != NULL) {
     if (tptr->key == k) break;
     pptr = tptr;
