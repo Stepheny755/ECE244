@@ -1,4 +1,4 @@
-# Lecture 31
+# Lecture 32
 Dec. 01/2020
 
 # Announcements
