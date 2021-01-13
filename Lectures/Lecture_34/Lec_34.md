@@ -181,4 +181,4 @@ do {
 ```
 1. This code involves repeated division by 2
   * Thats sort of similar to `log_n`
-  * In fact, this code is of order `O(log_n)` 
+  * In fact, this code is of order `O(log_n)`

@@ -6,7 +6,7 @@ using namespace std;
 
 int main(){
 
-  bigint a("52344");
+  bigint a("52344000000000000000000000000000000000000000000000");
   bigint b("5678");
   bigint c(10000000);
 

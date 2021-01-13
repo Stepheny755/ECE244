@@ -24,15 +24,25 @@ bigint::bigint(bigint & src){
   this->size = src.size;
 }
 
-string bigint::add(string a,string b,float alen,float blen) const{
-  float maxlen = 0;
-  if(alen>=blen){
-    maxlen=alen;
-    b.insert(b.begin(),alen-blen,'0');
+string bigint::num_maxlen(float a,float b) const{
+  if(a>=b){
+    return a;
   }else{
-    maxlen=blen;
-    a.insert(a.begin(),blen-alen,'0');
+    return b;
   }
+}
+
+string bigint::num_minlen(float a,float b) const{
+  if(a<=b){
+    return a;
+  }else{
+    return b;
+  }
+}
+
+
+string bigint::add(string a,string b,float alen,float blen) const{
+  float maxlen = num_maxlen(alen,blen);
   string out = "";
   int carry = 0;
   for(int i = (int)maxlen-1;i >=0;i--){
@@ -49,6 +59,23 @@ string bigint::add(string a,string b,float alen,float blen) const{
     //cout << "out:  " << out << " ai: " << ai << " bi: " << bi << endl;
   }
   return out;
+}
+
+string bigint::multiply(string a,string b,float alen,float blen) const{
+  float minlen = num_minlen(alen,blen);
+  for(int i = (int)minlen;i >=0;i--){
+    int ai = a[i] - '0';
+    int bi = b[i] - '0';
+    int s = ai+bi+carry;
+    if(s>=10){
+      s = s%10;
+      carry = 1;
+    }else{
+      carry = 0;
+    }
+    out = to_string(s)+out;
+    //cout << "out:  " << out << " ai: " << ai << " bi: " << bi << endl;
+  }
 }
 
 bigint bigint::operator+(const bigint & rhs) const{

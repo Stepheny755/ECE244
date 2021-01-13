@@ -75,3 +75,11 @@ delete ptr1;
 ```
 Note: In this case, if the destructor is *not* defined virtually, `delete ptr1` ***only*** calls the destructor for the type of `ptr1` which is `Base*`
 * `~D1();` is ***not*** called
+
+# Const Functions
+
+```c++
+int a() const{}
+```
+
+**constant member functions** *cannot* call class mutator functions
